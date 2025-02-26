@@ -6,29 +6,31 @@ volumes:
 
 services:
   app:
-    image: snipe/snipe-it:${APP_VERSION:-latest}
+    image: snipe/snipe-it:${APP_VERSION:-v7.0.11}
+    container_name: seta
     restart: unless-stopped
     volumes:
       - storage:/var/lib/snipeit
     ports:
-      - "${APP_PORT:-8000}:80"
+      - 8888:80
     depends_on:
       db:
         condition: service_healthy
         restart: true
     env_file:
-      - .env
+      - snipeenv.docker
 
   db:
     image: mariadb:11.5.2
+    container_name: databases
     restart: unless-stopped
     volumes:
       - db_data:/var/lib/mysql
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: snipeit
+      MYSQL_USER: snipeit
+      MYSQL_PASSWORD: Adminlocal123a@
+      MYSQL_ROOT_PASSWORD: Adminlocal123a@
     healthcheck:
       # https://mariadb.com/kb/en/using-healthcheck-sh/#compose-file-example
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]

@@ -84,6 +84,9 @@ dir="{{ Helper::determineLanguageDirection() }}">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <script src="{{ url(asset('js/html5shiv.js')) }}" nonce="{{ csrf_token() }}"></script>
     <script src="{{ url(asset('js/respond.js')) }}" nonce="{{ csrf_token() }}"></script>
+    
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
 
 
@@ -801,6 +804,18 @@ dir="{{ Helper::determineLanguageDirection() }}">
                                 </a>
                             </li>
                         @endcan
+
+                        <li>
+                            <a href="{{ url('count') }}" {{ (Request::is('count') ? ' class="active"' : '') }}>
+                                <i class="bi bi-amd"></i> Statistical
+                            </a>
+                        </li>    
+                        
+
+                        
+
+
+
 
 
                     </ul>

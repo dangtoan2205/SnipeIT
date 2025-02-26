@@ -24,6 +24,7 @@ use App\Http\Controllers\ViewAssetsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\CountController;
 use App\Livewire\Importer;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -555,3 +556,14 @@ Route::middleware(['auth'])->get(
     '/',
     [DashboardController::class, 'index']
 )->name('home');
+
+
+
+Route::get('/count', [CountController::class, 'index']);
+ 
+// Route::controller(CountController::class)->group(function () {
+//     Route::get('/count', 'index');
+//     Route::get('/count', 'countMonitor');
+// });
+
+// Route::get('/count', [CountController::class, 'handleCount']);

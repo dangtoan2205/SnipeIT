@@ -13,6 +13,10 @@ docker build --no-cache -t snipeit-build .
 
 ```
 docker exec -it mariadb-databases bash
+apt-get update && apt-get install -y mysql-client
+```
+
+```
 mysql -u root -pAdminlocal123a@
 ```
 

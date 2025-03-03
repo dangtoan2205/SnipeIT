@@ -1,39 +1,76 @@
-# Compose file for production.
+version: '3.8'
 
 volumes:
   db_data:
-  storage:
+  storage_seta:
+  storage_blue:
+  storage_ai:
+
+networks:
+  snipeit_net:
 
 services:
-  app:
-    image: snipeit-build
-    container_name: seta
-    restart: unless-stopped
-    volumes:
-      - storage:/var/lib/snipeit
-    ports:
-      - 8888:80
-    depends_on:
-      db:
-        condition: service_healthy
-        restart: true
-    env_file:
-      - snipeenv.docker
-
   db:
     image: mariadb:11.5.2
-    container_name: databases
+    container_name: mariadb-databases
     restart: unless-stopped
+    networks:
+      - snipeit_net
     volumes:
       - db_data:/var/lib/mysql
     environment:
-      MYSQL_DATABASE: snipeit
-      MYSQL_USER: snipeit
-      MYSQL_PASSWORD: Adminlocal123a@
       MYSQL_ROOT_PASSWORD: Adminlocal123a@
     healthcheck:
-      # https://mariadb.com/kb/en/using-healthcheck-sh/#compose-file-example
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 5s
       timeout: 1s
       retries: 5
+
+  seta:
+    image: snipeit-build
+    container_name: snipeit-seta
+    restart: unless-stopped
+    networks:
+      - snipeit_net
+    volumes:
+      - storage_seta:/var/lib/snipeit
+    ports:
+      - "6666:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./snipeenv_seta.docker
+
+  blue:
+    image: snipeit-build
+    container_name: snipeit-blue
+    restart: unless-stopped
+    networks:
+      - snipeit_net
+    volumes:
+      - storage_blue:/var/lib/snipeit
+    ports:
+      - "7777:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./snipeenv_blue.docker
+
+  ai:
+    image: snipeit-build
+    container_name: snipeit-ai
+    restart: unless-stopped
+    networks:
+      - snipeit_net
+    volumes:
+      - storage_ai:/var/lib/snipeit
+    ports:
+      - "8888:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./snipeenv_ai.docker
+

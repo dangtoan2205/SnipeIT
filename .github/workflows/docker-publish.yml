@@ -22,10 +22,14 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker image
+      - name: Build Docker image with local tag
         run: |
-          docker build -t toandn2205/snipeit:latest .
+          docker build -t snipeit-build .
 
-      - name: Push Docker image
+      - name: Tag image for DockerHub
+        run: |
+          docker tag snipeit-build toandn2205/snipeit:latest
+
+      - name: Push Docker image to DockerHub
         run: |
           docker push toandn2205/snipeit:latest
